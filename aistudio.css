@@ -1,0 +1,71 @@
+// ==UserScript==
+// @name         aistudio.css
+// @version      1.0
+// @match        https://aistudio.google.com/*
+// @grant        GM_addStyle
+// @run-at       document-start
+// ==/UserScript==
+
+// @updateURL    https://raw.githubusercontent.com/xcviko/userscripts/main/aistudio.css
+// @downloadURL  https://raw.githubusercontent.com/xcviko/userscripts/main/aistudio.css
+
+(function() {
+    'use strict';
+
+    GM_addStyle(`
+.run-button-content {
+  gap: 2px !important;
+}
+
+.run-button-content .secondary-key {
+  display: none !important;
+}
+
+ms-code-block .container {
+  margin: 8px 0 0 !important;
+}
+
+ms-text-chunk p {
+  margin: 8px 0 0 !important;
+}
+
+ms-text-chunk ol,
+ms-text-chunk ul {
+  margin: 4px 0 0 !important;
+}
+
+ms-text-chunk li {
+  margin: 4px 0 0 !important;
+}
+
+ms-text-chunk ol p,
+ms-text-chunk ul p {
+  margin: 0 0 0 !important;
+}
+
+ms-text-chunk h1,
+ms-text-chunk h2,
+ms-text-chunk h3,
+ms-text-chunk h4,
+ms-text-chunk h5,
+ms-text-chunk h6 {
+  margin: 16px 0 0 !important;
+}
+
+ms-text-chunk hr {
+  display: none !important;
+}
+
+ms-text-chunk p:first-child {
+  margin-top: 0px !important;
+}
+
+ms-text-chunk blockquote {
+  margin: 8px 0 0 !important;
+}
+
+.promo-gallery {
+  display: none !important;
+}
+    `);
+})();
