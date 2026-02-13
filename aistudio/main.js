@@ -1,13 +1,12 @@
 // ==UserScript==
-// @name         aistudio.css
+// @name         aistudio
 // @version      1.0
 // @match        https://aistudio.google.com/*
 // @grant        GM_addStyle
 // @run-at       document-start
+// @updateURL    https://raw.githubusercontent.com/xcviko/userscripts/main/aistudio/main.js
+// @downloadURL  https://raw.githubusercontent.com/xcviko/userscripts/main/aistudio/main.js
 // ==/UserScript==
-
-// @updateURL    https://raw.githubusercontent.com/xcviko/userscripts/main/aistudio.css
-// @downloadURL  https://raw.githubusercontent.com/xcviko/userscripts/main/aistudio.css
 
 (function() {
     'use strict';

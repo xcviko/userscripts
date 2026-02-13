@@ -2,40 +2,34 @@
 
 Tampermonkey userscripts for Chrome.
 
-## Current structure
-
-Flat — one file per service:
-
-```
-├── youtube.js
-├── telegraph.css
-└── aistudio.css
-```
-
-Naming: `service.js` for logic scripts, `service.css` for style-only scripts.
-
-## TODO: modular structure
-
-When a script grows large enough to split, move it into a directory with `@require`:
+## Structure
 
 ```
 ├── youtube/
-│   ├── main.js              # entry point with @require for each module
-│   ├── block-shorts.js
-│   └── watch-hotkeys.js
-├── telegraph.css
-└── aistudio.css
+│   ├── main.js       # entry point (@require modules)
+│   ├── css.js        # hide overlay, hide shorts
+│   ├── loop.js       # reliable video loop via timeupdate rewind
+│   └── hotkeys.js    # keyboard shortcuts (arrow focus fix, J/L block, cyrillic swap)
+├── telegraph/
+│   └── main.js       # dark mode
+└── aistudio/
+    └── main.js       # compact spacing, hide promo
 ```
 
-`main.js` uses raw GitHub URLs to load modules:
+Each site is a folder. `main.js` is the Tampermonkey entry point.
 
-```js
-// @require https://raw.githubusercontent.com/xcviko/userscripts/main/youtube/block-shorts.js
-// @require https://raw.githubusercontent.com/xcviko/userscripts/main/youtube/watch-hotkeys.js
-```
+For multi-file scripts (youtube), `main.js` uses `@require` to load feature modules.
+Each module exports an `initFeatureName()` function called from `main.js`.
 
-When this happens, update this README to reflect the new structure.
+## Adding a feature
 
-## Rules for future Claude sessions
+1. Create `youtube/my-feature.js` with a `function initMyFeature() { ... }`
+2. Add `@require` in `youtube/main.js` header
+3. Call `initMyFeature()` in the IIFE body
+4. Bump `@version` in `main.js`
 
-- **Bump `@version`** in the userscript header on every change. Tampermonkey uses this to detect updates.
+## Conventions
+
+- Bump `@version` on every change — Tampermonkey uses it for auto-update
+- One feature per file for youtube, single file for css-only scripts
+- `@run-at document-start` for scripts that intercept native APIs

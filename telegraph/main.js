@@ -1,13 +1,12 @@
 // ==UserScript==
-// @name         telegraph.css
+// @name         telegraph
 // @version      1.0
 // @match        https://telegra.ph/*
 // @grant        GM_addStyle
 // @run-at       document-start
+// @updateURL    https://raw.githubusercontent.com/xcviko/userscripts/main/telegraph/main.js
+// @downloadURL  https://raw.githubusercontent.com/xcviko/userscripts/main/telegraph/main.js
 // ==/UserScript==
-
-// @updateURL    https://raw.githubusercontent.com/xcviko/userscripts/main/telegraph.css
-// @downloadURL  https://raw.githubusercontent.com/xcviko/userscripts/main/telegraph.css
 
 (function() {
     'use strict';

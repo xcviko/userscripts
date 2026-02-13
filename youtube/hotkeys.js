@@ -1,68 +1,4 @@
-// ==UserScript==
-// @name         youtube.js
-// @version      1.1
-// @match        https://www.youtube.com/*
-// @grant        none
-// @run-at       document-start
-// ==/UserScript==
-
-// @updateURL    https://raw.githubusercontent.com/xcviko/userscripts/main/youtube.js
-// @downloadURL  https://raw.githubusercontent.com/xcviko/userscripts/main/youtube.js
-
-(function() {
-    'use strict';
-
-    // css overrides
-    const style = document.createElement('style');
-    style.textContent = `
-        .ytp-overlay-bottom-right { display: none !important; }
-    `;
-    document.documentElement.appendChild(style);
-
-    // loop: intercept native loop property
-    const nativeLoop = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'loop');
-    let loopOn = false;
-
-    Object.defineProperty(HTMLMediaElement.prototype, 'loop', {
-        get() { return loopOn; },
-        set(v) {
-            loopOn = !!v;
-            nativeLoop.set.call(this, false);
-        },
-        configurable: true,
-        enumerable: true
-    });
-
-    // loop: reliable timeupdate-based repeat
-    let curVideo = null;
-
-    function onTimeUpdate(e) {
-        const v = e.target;
-        if (!loopOn) return;
-        if (!isFinite(v.duration) || v.duration < 1) return;
-        const player = document.getElementById('movie_player');
-        if (player && player.classList.contains('ad-showing')) return;
-        if (v.duration - v.currentTime < 1.5) {
-            v.currentTime = 0;
-        }
-    }
-
-    function bindVideo() {
-        const v = document.querySelector('#movie_player video');
-        if (v && v !== curVideo) {
-            if (curVideo) curVideo.removeEventListener('timeupdate', onTimeUpdate);
-            curVideo = v;
-            v.addEventListener('timeupdate', onTimeUpdate);
-        }
-    }
-
-    new MutationObserver(bindVideo).observe(document.documentElement, {
-        childList: true, subtree: true
-    });
-
-    document.addEventListener('yt-navigate-finish', bindVideo);
-
-    // Эмуляция событий
+function initHotkeys() {
     function simulateKey(keyChar, keyCode, code, shiftKey) {
         const target = document.body;
         const eventObj = new KeyboardEvent('keydown', {
@@ -91,15 +27,14 @@
         }
     }
 
-    // Слушаем события
     ['keydown', 'keyup', 'keypress'].forEach(eventType => {
         document.addEventListener(eventType, function(e) {
 
-            // 0. Пропускаем наши же сгенерированные события
+            // skip our own simulated events
             if (e.isSimulated) return;
 
             const target = e.target;
-            // 1. Игнор ввода текста
+            // ignore text inputs
             if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
                 return;
             }
@@ -107,24 +42,21 @@
             const code = e.code;
             const video = document.querySelector('video');
 
-            // --- ПРОБЕЛ (SPACE) ---
-            // Мы его удалили. Работает как задумано Ютубом.
-
-            // Вся остальная логика только на нажатие (keydown)
+            // all key logic is keydown only
             if (eventType !== 'keydown') return;
             if (!video) return;
 
-            // --- БЛОКИРОВКА J и L ---
+            // block J and L
             if (code === 'KeyJ' || code === 'KeyL') {
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 return;
             }
 
-            // --- СТРЕЛКИ (Фикс фокуса + Option Seek) ---
+            // arrows: focus fix + option seek
             if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(code)) {
 
-                // Сценарий 1: OPTION + Стрелка -> эмуляция J/L (10 сек)
+                // option + arrow -> emulate J/L (10 sec seek)
                 if (e.altKey) {
                     if (code === 'ArrowLeft' || code === 'ArrowRight') {
                         e.preventDefault();
@@ -137,8 +69,7 @@
                     return;
                 }
 
-                // Сценарий 2: ПРОСТЫЕ СТРЕЛКИ -> ФИКС ФОКУСА
-                // Если случайно кликнул на громкость, стрелки вернут фокус на плеер и сработают нормально
+                // plain arrows -> fix focus then forward to player
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
@@ -149,7 +80,7 @@
                 }
             }
 
-            // --- Б / Ю (Смена местами) ---
+            // swap , and < (cyrillic Б/Ю layout fix)
             if (code === 'Comma') {
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -168,5 +99,4 @@
 
         }, true);
     });
-
-})();
+}
