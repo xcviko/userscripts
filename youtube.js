@@ -12,6 +12,13 @@
 (function() {
     'use strict';
 
+    // css overrides
+    const style = document.createElement('style');
+    style.textContent = `
+        .ytp-overlay-bottom-right { display: none !important; }
+    `;
+    document.documentElement.appendChild(style);
+
     // Эмуляция событий
     function simulateKey(keyChar, keyCode, code, shiftKey) {
         const target = document.body;
