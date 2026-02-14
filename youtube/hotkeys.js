@@ -84,16 +84,16 @@ function initHotkeys() {
             if (code === 'Comma') {
                 e.preventDefault();
                 e.stopImmediatePropagation();
-                if (e.shiftKey) simulateKey(',', 188, 'Comma', false);
-                else simulateKey('<', 188, 'Comma', true);
+                if (e.shiftKey || !video.paused) simulateKey('<', 188, 'Comma', true);
+                else simulateKey(',', 188, 'Comma', false);
                 return;
             }
 
             if (code === 'Period') {
                 e.preventDefault();
                 e.stopImmediatePropagation();
-                if (e.shiftKey) simulateKey('.', 190, 'Period', false);
-                else simulateKey('>', 190, 'Period', true);
+                if (e.shiftKey || !video.paused) simulateKey('>', 190, 'Period', true);
+                else simulateKey('.', 190, 'Period', false);
                 return;
             }
 

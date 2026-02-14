@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         youtube
-// @version      2.0
+// @version      2.1
 // @match        https://www.youtube.com/*
 // @grant        none
 // @run-at       document-start
