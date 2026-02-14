@@ -28,6 +28,13 @@ Each module exports an `initFeatureName()` function called from `main.js`.
 3. Call `initMyFeature()` in the IIFE body
 4. Bump `@version` in `main.js`
 
+## YouTube roadmap
+
+- [ ] Homepage: hide all videos, keep only search bar
+- [ ] Search suggestions: wrap in `<a>` links so right-click → open in new tab works (left-click stays default)
+- [ ] Search button: make it a link for right-click → open in new tab
+- [ ] Custom menu in YouTube's left sidebar (native-like button) to toggle features on/off with descriptions
+
 ## Conventions
 
 - Bump `@version` on every change — Tampermonkey uses it for auto-update
